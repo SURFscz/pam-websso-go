@@ -26,8 +26,8 @@ func pam_sm_authenticate(pamh *C.pam_handle_t, flags, argc C.int, argv **C.char)
 	var tempBuf *C.char
 	defer C.free(unsafe.Pointer(tempBuf))
 
-	C.pam_prompt(pamh, C.PAM_PROMPT_ECHO_ON, &tempBuf, C.CString("pam-websso.go Press enter):"))
-	C.pam_prompt(pamh, C.PAM_PROMPT_ECHO_ON, nil, tempBuf)
+	C.pam_prompt(pamh, C.PAM_PROMPT_ECHO_ON, &tempBuf, C.CString("Press enter (Go pam_websso)"))
+	//C.pam_prompt(pamh, C.PAM_PROMPT_ECHO_ON, nil, tempBuf)
 
 	return C.PAM_SUCCESS
 }
