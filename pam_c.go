@@ -1,6 +1,8 @@
 package main
 
 /*
+#include <string.h>
+
 #ifdef __APPLE__
   #include <sys/ptrace.h>
 #elif __linux__
@@ -14,9 +16,15 @@ int disable_ptrace() {
 #endif
   return 1;
 }
+
+char *string_from_argv(int i, char **argv) {
+  return strdup(argv[i]);
+}
 */
 import "C"
 
 func disablePtrace() bool {
 	return C.disable_ptrace() == C.int(0)
 }
+
+

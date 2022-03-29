@@ -10,8 +10,8 @@ import (
 #cgo LDFLAGS: -lpam -fPIC
 #include <security/pam_appl.h>
 #include <stdlib.h>
+
 int pam_prompt(pam_handle_t *pamh, int style, char **response, const char *fmt);
-int pam_get_user(pam_handle_t *pamh, const char **user, const char *prompt);
 */
 import "C"
 
@@ -26,8 +26,11 @@ func pam_sm_authenticate(pamh *C.pam_handle_t, flags, argc C.int, argv **C.char)
 	var tempBuf *C.char
 	defer C.free(unsafe.Pointer(tempBuf))
 
-	C.pam_prompt(pamh, C.PAM_PROMPT_ECHO_ON, &tempBuf, C.CString("Press enter (Go pam_websso)"))
-	//C.pam_prompt(pamh, C.PAM_PROMPT_ECHO_ON, nil, tempBuf)
+	// Load config from argv
+        config := Config{}
+        config.LoadFromFile(argv)
+	C.pam_prompt(pamh, C.PAM_PROMPT_ECHO_ON, nil, C.CString(Config.Sso_server))
+	//C.pam_prompt(pamh, C.PAM_PROMPT_ECHO_ON, &tempBuf, C.CString("Press enter (Go pam_websso)"))
 
 	return C.PAM_SUCCESS
 }
