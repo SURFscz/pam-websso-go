@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"log/syslog"
-	//"net/http"
+	"net/http"
+	"net/url"
 	//"io/ioutil"
 	//"encoding/json"
 )
@@ -18,32 +19,33 @@ func pamLog(format string, args ...interface{}) {
 }
 
 type Req struct {
-	nonce string
-	pin string
-	challenge string
-	hot bool
+	Nonce string		`json:"nonce"`
+	Pin string		`json:"pin"`
+	Challenge string	`json:"challenge"`
+	Hot bool		`json:"hot"`
 }
 
-type Auth struct {
-	uid string
-	success	bool
-}
+func (req *Req) startReq(user string) error {
+	sso_url := "http://localhost:8123/req"
+	req.Challenge = sso_url
+	r, _ := http.NewRequest("POST", sso_url, nil)
+	client := &http.Client{}
+	_, _ = client.Do(r)
+	_, _ = http.PostForm(sso_url, url.Values{"user": {user}})
+/*
+	if err != nil {
+		panic(err)
+	}
+	defer response.Body.Close()
 
-func (req *Req) startReq(userID string) (*Req, error) {
+	body, _ := ioutil.ReadAll(response.Body)
 
-	req.nonce = "1234"
-	req.pin = "4321"
-	req.challenge = "Press enter"
-	req.hot = false
-
-	return req, nil
-}
-
-func (auth *Auth) getAuth(nonce string) (*Auth, error) {
-	auth.uid = "Test"
-	auth.success = true
-
-	return auth, nil
+	err = json.Unmarshal(body, &req)
+	if err != nil {
+		panic(err)
+	}
+*/
+	return nil
 }
 
 func main() {

@@ -1,2 +1,2 @@
-sso_server: "http://127.0.0.2:8123"
+sso_server: "http://localhost:8123/req"
 token: 1234

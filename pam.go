@@ -29,7 +29,13 @@ func pam_sm_authenticate(pamh *C.pam_handle_t, flags, argc C.int, argv **C.char)
 	// Load config from argv
         config := Config{}
         config.LoadFromFile(argv)
-	C.pam_prompt(pamh, C.PAM_PROMPT_ECHO_ON, nil, C.CString(Config.Sso_server))
+
+	user := "martin"
+	req := Req{}
+	req.startReq(user)
+
+	C.pam_prompt(pamh, C.PAM_PROMPT_ECHO_ON, nil, C.CString(req.Challenge))
+	//C.pam_prompt(pamh, C.PAM_PROMPT_ECHO_ON, nil, C.CString(config.Sso_server))
 	//C.pam_prompt(pamh, C.PAM_PROMPT_ECHO_ON, &tempBuf, C.CString("Press enter (Go pam_websso)"))
 
 	return C.PAM_SUCCESS
