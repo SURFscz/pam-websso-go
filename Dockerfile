@@ -7,7 +7,6 @@ RUN mkdir /run/sshd
 
 RUN apt install -y build-essential make golang libpam-dev pamtester vim ca-certificates git sudo rsyslog
 RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
-RUN echo 'auth required pam_websso.so' >> /etc/pam.d/sshd
 RUN sed -i 's/^ChallengeResponseAuthentication no$/ChallengeResponseAuthentication yes/g' /etc/ssh/sshd_config
 
 RUN ssh-keygen -A
