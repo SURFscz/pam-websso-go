@@ -3,10 +3,10 @@ MODULE := pam_websso
 ALL: module
 
 deps:
-	GOPATH=${PWD}/.go go get -d
+	GOPATH=${HOME}/.go go get -d
 
 module: deps
-	GOPATH=${PWD}/.go go build -buildmode=c-shared -o ${MODULE}.so
+	GOPATH=${HOME}/.go go build -buildmode=c-shared -o ${MODULE}.so
 
 install: module
 	sudo cp ${MODULE}.so /lib/x86_64-linux-gnu/security/
