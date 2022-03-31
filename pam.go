@@ -4,6 +4,8 @@ package main
 
 import (
 	"unsafe"
+	"log"
+	"os"
 )
 
 /*
@@ -26,9 +28,17 @@ func pam_sm_authenticate(pamh *C.pam_handle_t, flags, argc C.int, argv **C.char)
 	var tempBuf *C.char
 	defer C.free(unsafe.Pointer(tempBuf))
 
+	logFile, err := os.Create("/tmp/mylogfile")
+	if err != nil {
+		log.Fatalf("cannot create log file: %v", err)
+	}
+	log.SetOutput(logFile)
+
+	pamLog("Start ...")
+
 	// Load config from argv
-        config := Config{}
-        config.LoadFromFile(argv)
+	config := Config{}
+	config.LoadFromFile(argv)
 
 	user := "martin"
 	req := Req{}
