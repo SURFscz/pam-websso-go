@@ -1,3 +1,8 @@
+# Deprecation
+This module is deprecated due to the fact that Go routines and invocation of PAM from SSH are not compatible.
+
+The issue is caused by SSH forking when starting the PAM subprocess, while Go wants to start a thread on goroutine. These don't go together well and result in an indefinate mutex lock wait in the PAM module.
+
 # Go PAM WebSSO module
 Go version of the SRAM websso module
 
